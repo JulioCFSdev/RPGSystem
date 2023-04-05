@@ -1,24 +1,23 @@
 using System;
-using Gameplay.Mouse;
 using UnityEngine;
 
-namespace Gameplay.Unit
+namespace Gameplay.Characters
 {
     public class Unit : MonoBehaviour
     {
         [SerializeField] private Vector3 targetPosition;
 
         [SerializeField] private float moveSpeed = 4f;
-        private readonly int _mouseKeyCode = 0;
         private readonly String _isWalkingAnimationParameter = "IsWalking";
         private Animator _unitAnimator;
 
         private void Awake()
         {
+            targetPosition = transform.position;
             _unitAnimator = gameObject.GetComponentInChildren<Animator>();
         }
 
-        void Update()
+        private void Update()
         {
             // Acceptance Margin for the new distance that the unit
             float stoppingDistance = 0.1f;
@@ -39,16 +38,10 @@ namespace Gameplay.Unit
                 // Assigning the value of "false" to the running animation parameter.
                 _unitAnimator.SetBool(_isWalkingAnimationParameter,false);
             }
-            
-            if (Input.GetMouseButtonDown(_mouseKeyCode))
-            {
-                var mousePosition = MouseWorld.GetRaycastPoint();
-                Move(mousePosition);
-            }
         }
         
         // Delegate New Position To Unit
-        private void Move(Vector3 newTargetPosition)
+        public void Move(Vector3 newTargetPosition)
         {
             targetPosition = newTargetPosition;
         }
