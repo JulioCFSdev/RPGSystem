@@ -1,3 +1,4 @@
+using Gameplay.Mouse;
 using UnityEngine;
 
 namespace Gameplay.Unit
@@ -7,6 +8,7 @@ namespace Gameplay.Unit
         [SerializeField] private Vector3 targetPosition;
 
         [SerializeField] private float moveSpeed = 4f;
+        [SerializeField] private int mouseKeyCode = 0; 
         
         void Update()
         {
@@ -18,10 +20,10 @@ namespace Gameplay.Unit
                 gameObject.transform.position += moveDirection * (Time.deltaTime * moveSpeed);    
             }
             
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetMouseButtonDown(mouseKeyCode))
             {
-                Move(new Vector3(4,0,4));
-                Vector3.Distance(transform.position, targetPosition);
+                var mousePosition = MouseWorld.GetRaycastPoint();
+                Move(mousePosition);
             }
         }
         
