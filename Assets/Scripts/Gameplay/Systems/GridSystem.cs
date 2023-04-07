@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Gameplay.Grid;
 using UnityEngine;
 
 namespace Gameplay.Systems
@@ -9,6 +8,7 @@ namespace Gameplay.Systems
         private int _width;
         private int _height;
         private float _cellSize;
+        private GridObject[,] gridObjectArray;
         
         public GridSystem(int width, int height, float cellSize)
         {
@@ -16,11 +16,13 @@ namespace Gameplay.Systems
             this._height = height;
             this._cellSize = cellSize;
 
-            for (int x = 0; x < width; x++)
+            gridObjectArray = new GridObject[_width, _height];
+            for (int x = 0; x < _width; x++)
             {
-                for (int z = 0; z < height; z++)
+                for (int z = 0; z < _height; z++)
                 {
-                    Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z) + Vector3.right * .2f, Color.white, 1000);
+                    GridPosition gridPosition = new GridPosition(x, z);
+                    gridObjectArray[x, z] = new GridObject(this, gridPosition);
                 }
             }
         }
@@ -35,6 +37,17 @@ namespace Gameplay.Systems
                 Mathf.RoundToInt(worldPosition.x / _cellSize),
                 Mathf.RoundToInt(worldPosition.z / _cellSize)
             );
+        }
+
+        public void CreateDebugObjects(Transform debugPrefab)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                for (int z = 0; z < _height; z++)
+                {
+                    GameObject.Instantiate(debugPrefab, GetWorldPosition(x, z), Quaternion.identity);
+                }
+            }
         }
     }    
 }

@@ -1,4 +1,4 @@
-namespace Gameplay.Systems
+namespace Gameplay.Grid
 {
     public struct GridPosition
     {
