@@ -1,6 +1,7 @@
 using Gameplay.Mouse;
 using UnityEngine;
 using System;
+using Environment.Grid;
 using Gameplay.Characters;
 
 namespace Environment.Systems
@@ -29,8 +30,14 @@ namespace Environment.Systems
             if (Input.GetMouseButtonDown(_mouseKeyCode))
             {
                 if(HandleUnitSelection()) return;
+                
                 var mousePosition = MouseWorld.GetRaycastPoint();
-                selectedUnit.GetMoveAction().Move(mousePosition);
+                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
+
+                if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+                {
+                    selectedUnit.GetMoveAction().Move(mouseGridPosition);
+                }
             }
         }
 

@@ -44,6 +44,11 @@ namespace Environment.Grid
         {
             return _unitList;
         }
+
+        public bool HasAnyUnit()
+        {
+            return _unitList.Count > 0;
+        }
     }       
 }
 

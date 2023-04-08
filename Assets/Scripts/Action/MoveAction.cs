@@ -47,9 +47,15 @@ namespace Action
         }
     
         // Delegate New Position To Unit
-        public void Move(Vector3 newTargetPosition)
+        public void Move(GridPosition gridPosition)
         {
-            _targetPosition = newTargetPosition;
+            this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        }
+
+        public bool IsValidActionGridPosition(GridPosition gridPosition)
+        {
+            List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
+            return validGridPositionList.Contains(gridPosition);
         }
 
         public List<GridPosition> GetValidActionGridPositionList()
@@ -58,13 +64,32 @@ namespace Action
 
             GridPosition unitGridPosition = _unit.GetGridPosition();
             
+            // Mapping All Potential possible grid positions within the maximum range
             for (int x = -maxMoveDistance; x <= maxMoveDistance; x++)
             {
                 for (int z = -maxMoveDistance; z <= maxMoveDistance; z++)
                 {
                     GridPosition offSetGridPosition = new GridPosition(x, z);
                     GridPosition testGridPosition = unitGridPosition + offSetGridPosition;
-                    Debug.Log(testGridPosition);
+                    
+                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                    {
+                        // Test if it is inside the actual grid bounds
+                        continue;
+                    }
+
+                    if (unitGridPosition == testGridPosition)
+                    {
+                        // Same Grid Position where the unit is already at
+                        continue;
+                    }
+
+                    if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                    {
+                        // Grid Position already occupied with another Unit
+                        continue;
+                    }
+                    validGridPositionList.Add(testGridPosition);
                 }
             }
             
