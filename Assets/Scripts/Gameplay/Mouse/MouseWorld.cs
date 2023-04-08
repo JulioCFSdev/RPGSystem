@@ -27,7 +27,7 @@ namespace Gameplay.Mouse
                 }
         
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                print("Mouse Position in World is enable ? : " + Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _instance.mousePlaneLayerMask));
+                Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _instance.mousePlaneLayerMask);
                 return raycastHit.point;
             }
             catch (NullReferenceException e)

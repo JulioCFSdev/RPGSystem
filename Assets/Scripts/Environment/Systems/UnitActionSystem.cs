@@ -30,7 +30,7 @@ namespace Environment.Systems
             {
                 if(HandleUnitSelection()) return;
                 var mousePosition = MouseWorld.GetRaycastPoint();
-                selectedUnit.Move(mousePosition);
+                selectedUnit.GetMoveAction().Move(mousePosition);
             }
         }
 
