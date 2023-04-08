@@ -51,7 +51,6 @@ namespace Gameplay.Characters
             GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             if (newGridPosition != _gridPosition)
             {
-                Debug.Log("ATUALIZA PORRA");
                 LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition,newGridPosition);
                 _gridPosition = newGridPosition;
             }
