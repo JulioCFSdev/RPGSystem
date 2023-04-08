@@ -1,7 +1,7 @@
-using Gameplay.Grid;
+using Environment.Grid;
 using UnityEngine;
 
-namespace Gameplay.Systems
+namespace Environment.Systems
 {
     public class GridSystem
     {
@@ -26,9 +26,9 @@ namespace Gameplay.Systems
                 }
             }
         }
-        public Vector3 GetWorldPosition(int x, int z)
+        public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
-            return new Vector3(x, 0, z) * _cellSize;
+            return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition)
@@ -45,9 +45,17 @@ namespace Gameplay.Systems
             {
                 for (int z = 0; z < _height; z++)
                 {
-                    GameObject.Instantiate(debugPrefab, GetWorldPosition(x, z), Quaternion.identity);
+                   GridPosition gridPosition = new GridPosition(x, z);
+                   Transform degubTransform = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                   GridDebugObject gridDebugObject = degubTransform.GetComponent<GridDebugObject>();
+                   gridDebugObject.SetGridObject(GetGridObject(gridPosition));
                 }
             }
+        }
+
+        public GridObject GetGridObject(GridPosition gridPosition)
+        {
+            return gridObjectArray[gridPosition.x, gridPosition.z];
         }
     }    
 }

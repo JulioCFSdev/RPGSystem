@@ -1,4 +1,5 @@
 using System;
+using Environment.Grid;
 using UnityEngine;
 
 namespace Gameplay.Characters
@@ -10,11 +11,18 @@ namespace Gameplay.Characters
         [SerializeField] private float moveSpeed = 4f;
         private readonly String _isWalkingAnimationParameter = "IsWalking";
         private Animator _unitAnimator;
+        private GridPosition _gridPosition;
 
         private void Awake()
         {
             targetPosition = transform.position;
             _unitAnimator = gameObject.GetComponentInChildren<Animator>();
+        }
+
+        private void Start()
+        {
+            _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+            LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
         }
 
         private void Update()
@@ -38,6 +46,16 @@ namespace Gameplay.Characters
                 // Assigning the value of "false" to the running animation parameter.
                 _unitAnimator.SetBool(_isWalkingAnimationParameter,false);
             }
+            
+            // Update Unit to its new GridPosition.
+            GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+            if (newGridPosition != _gridPosition)
+            {
+                Debug.Log("ATUALIZA PORRA");
+                LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition,newGridPosition);
+                _gridPosition = newGridPosition;
+            }
+
         }
         
         // Delegate New Position To Unit

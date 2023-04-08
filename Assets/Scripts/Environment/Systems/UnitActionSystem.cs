@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using Gameplay.Characters;
 
-namespace Gameplay.Systems
+namespace Environment.Systems
 {
     public class UnitActionSystem : MonoBehaviour
     {
