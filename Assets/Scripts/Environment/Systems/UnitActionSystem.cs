@@ -39,6 +39,11 @@ namespace Environment.Systems
                     selectedUnit.GetMoveAction().Move(mouseGridPosition);
                 }
             }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                selectedUnit.GetSpinAction().Spin();
+            }
         }
 
         private bool HandleUnitSelection()

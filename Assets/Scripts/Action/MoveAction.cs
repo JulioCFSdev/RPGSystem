@@ -6,7 +6,7 @@ using Gameplay.Characters;
 
 namespace Action
 {
-    public class MoveAction : MonoBehaviour
+    public class MoveAction : BaseAction
     {
         [SerializeField] private float moveSpeed = 4f;
         [SerializeField] private Animator unitAnimator;
@@ -14,28 +14,28 @@ namespace Action
         
         private Vector3 _targetPosition;
         private readonly string _isWalkingAnimationParameter = "IsWalking";
-        private Unit _unit;
     
-        private void Awake()
+        protected override void Awake()
         {
-            _unit = GetComponent<Unit>();
+            base.Awake();
             _targetPosition = transform.position;
         }
         
         // Update is called once per frame
         private void Update()
         {
+            if (!isActive)
+            {
+                return;
+            }
             // Acceptance Margin for the new distance that the unit
             float stoppingDistance = 0.1f;
+            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
+            
             if (Vector3.Distance(transform.position, _targetPosition) > stoppingDistance)
             {
-                Vector3 moveDirection = (_targetPosition - transform.position).normalized;
                 gameObject.transform.position += moveDirection * (Time.deltaTime * moveSpeed);
-                
-                // Smooth rotation of the character towards the new selected position.
-                float rotateSpeed = 10f;
-                transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
-                
+
                 // Assigning the value of "true" to the running animation parameter.
                 unitAnimator.SetBool(_isWalkingAnimationParameter,true);
             }
@@ -43,13 +43,19 @@ namespace Action
             {
                 // Assigning the value of "false" to the running animation parameter.
                 unitAnimator.SetBool(_isWalkingAnimationParameter,false);
+                isActive = false;
             }
+            
+            // Smooth rotation of the character towards the new selected position.
+            float rotateSpeed = 10f;
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
         }
     
         // Delegate New Position To Unit
         public void Move(GridPosition gridPosition)
         {
             this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+            isActive = true;
         }
 
         public bool IsValidActionGridPosition(GridPosition gridPosition)
@@ -62,7 +68,7 @@ namespace Action
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-            GridPosition unitGridPosition = _unit.GetGridPosition();
+            GridPosition unitGridPosition = unit.GetGridPosition();
             
             // Mapping All Potential possible grid positions within the maximum range
             for (int x = -maxMoveDistance; x <= maxMoveDistance; x++)
