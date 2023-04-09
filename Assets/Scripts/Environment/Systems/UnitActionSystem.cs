@@ -14,6 +14,8 @@ namespace Environment.Systems
         [SerializeField] private LayerMask unitLayerMask;
         private readonly int _mouseKeyCode = 0;
 
+        private bool _isBusy;
+
         private void Awake()
         {
             if (Instance != null)
@@ -27,6 +29,10 @@ namespace Environment.Systems
 
         private void Update()
         {
+            if (_isBusy)
+            {
+                return;
+            }
             if (Input.GetMouseButtonDown(_mouseKeyCode))
             {
                 if(HandleUnitSelection()) return;
@@ -36,14 +42,26 @@ namespace Environment.Systems
 
                 if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
                 {
-                    selectedUnit.GetMoveAction().Move(mouseGridPosition);
+                    SetBusy();
+                    selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearBusy);
                 }
             }
 
             if (Input.GetMouseButtonDown(1))
             {
-                selectedUnit.GetSpinAction().Spin();
+                SetBusy();
+                selectedUnit.GetSpinAction().Spin(ClearBusy);
             }
+        }
+
+        private void SetBusy()
+        {
+            _isBusy = true;
+        }
+        
+        private void ClearBusy()
+        {
+            _isBusy = false;
         }
 
         private bool HandleUnitSelection()

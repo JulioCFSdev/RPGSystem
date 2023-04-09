@@ -44,6 +44,7 @@ namespace Action
                 // Assigning the value of "false" to the running animation parameter.
                 unitAnimator.SetBool(_isWalkingAnimationParameter,false);
                 isActive = false;
+                onActionComplete();
             }
             
             // Smooth rotation of the character towards the new selected position.
@@ -52,8 +53,9 @@ namespace Action
         }
     
         // Delegate New Position To Unit
-        public void Move(GridPosition gridPosition)
+        public void Move(GridPosition gridPosition, System.Action onMoveComplete)
         {
+            this.onActionComplete = onMoveComplete;
             this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
             isActive = true;
         }

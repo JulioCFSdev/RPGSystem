@@ -1,11 +1,13 @@
 using UnityEngine;
 
+
 namespace Action
 {
     public class SpinAction : BaseAction
     {
         private float _totalSpinAmount;
         private bool _isActive;
+        private System.Action _onSpinComplete;
         private void Update()
         {
             if (!_isActive)
@@ -20,11 +22,13 @@ namespace Action
             {
                 _isActive = false;
                 _totalSpinAmount = 0f;
+                onActionComplete();
             }
         }
 
-        public void Spin()
+        public void Spin(System.Action onSpinComplete)
         {
+            this.onActionComplete = onSpinComplete;
             _isActive = true;
             Debug.Log("Spin");
         }
