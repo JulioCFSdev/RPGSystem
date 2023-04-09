@@ -65,5 +65,20 @@ namespace Environment.Systems
                    gridPosition.x < _width &&
                    gridPosition.z < _height;
         }
+
+        public int GetWidth()
+        {
+            return _width;
+        }
+
+        public int GetHeight()
+        {
+            return _height;
+        }
+
+        public float GetCellSize()
+        {
+            return _cellSize;
+        }
     }    
 }

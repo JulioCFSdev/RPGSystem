@@ -1,6 +1,4 @@
-using System;
 using Environment.Grid;
-using Gameplay.Mouse;
 using Environment.Systems;
 using Gameplay.Characters;
 using UnityEngine;
@@ -12,7 +10,8 @@ public class Testing : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            _unit.GetMoveAction().GetValidActionGridPositionList();
+            GridSystemVisual.Instance.HideAllGridPosition();
+            GridSystemVisual.Instance.ShowGridPositionList(_unit.GetMoveAction().GetValidActionGridPositionList());
         }
     }
 }
