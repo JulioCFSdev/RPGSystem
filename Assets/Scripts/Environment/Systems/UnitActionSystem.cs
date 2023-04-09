@@ -10,6 +10,7 @@ namespace Environment.Systems
     {
         public static UnitActionSystem Instance { get; private set; }
         public event EventHandler OnSelectionUnitChanged;
+        
         [SerializeField] private Unit selectedUnit;
         [SerializeField] private LayerMask unitLayerMask;
         private readonly int _mouseKeyCode = 0;

@@ -32,5 +32,10 @@ namespace Action
             _isActive = true;
             Debug.Log("Spin");
         }
+        
+        public override string GetActionName()
+        {
+            return "Spin";
+        }
     }    
 }

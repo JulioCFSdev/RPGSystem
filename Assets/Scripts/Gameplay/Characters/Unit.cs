@@ -11,11 +11,13 @@ namespace Gameplay.Characters
         private GridPosition _gridPosition;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
+        private BaseAction[] _baseActionsArray;
 
         private void Awake()
         {
             _moveAction = GetComponent<MoveAction>();
             _spinAction = GetComponent<SpinAction>();
+            _baseActionsArray = GetComponents<BaseAction>();
         }
 
         private void Start()
@@ -50,6 +52,11 @@ namespace Gameplay.Characters
         public GridPosition GetGridPosition()
         {
             return _gridPosition;
+        }
+
+        public BaseAction[] GetBaseActionArray()
+        {
+            return _baseActionsArray;
         }
     }
 }

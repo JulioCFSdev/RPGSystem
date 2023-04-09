@@ -103,5 +103,10 @@ namespace Action
             
             return validGridPositionList;
         }
+
+        public override string GetActionName()
+        {
+            return "Move";
+        }
     }    
 }
